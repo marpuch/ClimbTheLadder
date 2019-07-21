@@ -4,6 +4,7 @@ import java.util.Collections;
 
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AddLadderCtl {
 
     @PostMapping(value = "/add")
-    public ResultBean add(@Valid @RequestBody final AddLadderBean bean) {
-        return new ResultBean(Collections.emptyList(), -1);
+    public ResponseEntity<ResultBean> add(@Valid @RequestBody final AddLadderBean bean) {
+        return ResponseEntity.ok(new ResultBean(Collections.emptyList(), -1));
     }
 }
