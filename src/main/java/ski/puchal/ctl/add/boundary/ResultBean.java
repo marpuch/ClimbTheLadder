@@ -1,4 +1,4 @@
-package ski.puchal.ctl.add;
+package ski.puchal.ctl.add.boundary;
 
 import java.util.List;
 
