@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import ski.puchal.ctl.ladder.boundary.LadderCounterBean;
 import ski.puchal.ctl.ladder.boundary.LadderException;
@@ -24,8 +21,6 @@ import ski.puchal.ctl.ladder.boundary.ResultBean;
 /**
  * @author Marek Puchalski, Capgemini
  */
-@Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class LadderData implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LadderData.class);
@@ -67,10 +62,6 @@ public class LadderData implements Serializable {
                 .map(Map.Entry::getValue)
                 .peek(Collections::sort)
                 .collect(Collectors.toList());
-    }
-
-    public ResultBean getTopPlayers() {
-        return getTopPlayers(null);
     }
 
     public synchronized ResultBean getTopPlayers(final String name) {

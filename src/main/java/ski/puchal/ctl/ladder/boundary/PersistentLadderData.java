@@ -4,13 +4,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import pl.setblack.airomem.core.Persistent;
+import pl.setblack.airomem.core.Query;
 import pl.setblack.airomem.core.VoidCommand;
 import ski.puchal.ctl.ladder.control.LadderData;
 
@@ -21,20 +22,13 @@ import ski.puchal.ctl.ladder.control.LadderData;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class PersistentLadderData {
 
-    private final static Path STORE_FOLDER = Paths.get("./ladderData");
+    private static final Path STORE_FOLDER = Paths.get("./ladderData");
 
     private Persistent<LadderData> persistent;
 
-    private LadderData ladderData;
-
-    @Autowired
-    public PersistentLadderData(final LadderData ladderData) {
-        this.ladderData = ladderData;
-    }
-
     @PostConstruct
     public void init() {
-        persistent = Persistent.loadOptional(STORE_FOLDER, () -> ladderData);
+        persistent = Persistent.loadOptional(STORE_FOLDER, LadderData::new);
     }
 
     public void addLadderLevel1(final String name, final long timestamp) {
@@ -42,11 +36,11 @@ public class PersistentLadderData {
     }
 
     public ResultBean getTopPlayers(final String name) {
-        return ladderData.getTopPlayers(name);
+        return persistent.query(new GetTopLevelCommand(name));
     }
 
     public ResultBean getTopPlayers() {
-        return ladderData.getTopPlayers();
+        return persistent.query(new GetTopLevelCommand());
     }
 
     private static final class AddLadderLevel1Command implements VoidCommand<LadderData> {
@@ -54,7 +48,7 @@ public class PersistentLadderData {
         private String name;
         private long timestamp;
 
-        public AddLadderLevel1Command(final String name, final long timestamp) {
+        AddLadderLevel1Command(final String name, final long timestamp) {
             this.name = name;
             this.timestamp = timestamp;
         }
@@ -63,5 +57,27 @@ public class PersistentLadderData {
         public void executeVoid(final LadderData ladderData) {
             ladderData.addLadderLevel1(name, timestamp);
         }
+    }
+
+    private static final class GetTopLevelCommand implements Query<LadderData, ResultBean> {
+
+        private String name;
+
+        GetTopLevelCommand(final String name) {
+            this.name = name;
+        }
+
+        GetTopLevelCommand() {
+        }
+
+        @Override
+        public ResultBean evaluate(final LadderData ladderData) {
+            return ladderData.getTopPlayers(name);
+        }
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        persistent.close();
     }
 }

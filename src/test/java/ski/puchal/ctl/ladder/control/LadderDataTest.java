@@ -19,7 +19,7 @@ public class LadderDataTest {
         final LadderData manager = new LadderData();
 
         // when
-        final ResultBean result = manager.getTopPlayers();
+        final ResultBean result = manager.getTopPlayers(null);
 
         // then
         assertEquals(0, result.getShortList().size());
@@ -34,7 +34,7 @@ public class LadderDataTest {
 
         // when
         manager.addLadderLevel1("user1", 12345);
-        final ResultBean result = manager.getTopPlayers();
+        final ResultBean result = manager.getTopPlayers(null);
 
         // then
         assertEquals(1, result.getShortList().size());
@@ -56,7 +56,7 @@ public class LadderDataTest {
         // when
         manager.addLadderLevel1("user1", 12345);
         manager.addLadderLevel1("user1", 12345000);
-        final ResultBean result = manager.getTopPlayers();
+        final ResultBean result = manager.getTopPlayers(null);
 
         // then
         assertEquals(1, result.getShortList().size());
