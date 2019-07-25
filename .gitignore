@@ -32,3 +32,6 @@ build/
 
 ### Angular
 node_modules
+
+### Own
+ladderData
