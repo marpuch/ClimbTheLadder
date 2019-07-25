@@ -1,4 +1,4 @@
-package ski.puchal.ctl.add.boundary;
+package ski.puchal.ctl.ladder.boundary;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package ski.puchal.ctl.ladder.control;
+package ski.puchal.ctl.ladder.boundary;
 
 /**
  * @author Marek Puchalski, Capgemini

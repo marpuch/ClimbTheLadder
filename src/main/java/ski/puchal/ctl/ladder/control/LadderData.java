@@ -1,5 +1,6 @@
 package ski.puchal.ctl.ladder.control;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,18 +15,20 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import ski.puchal.ctl.add.boundary.Level;
-import ski.puchal.ctl.add.boundary.ListItemBean;
-import ski.puchal.ctl.add.boundary.ResultBean;
+import ski.puchal.ctl.ladder.boundary.LadderCounterBean;
+import ski.puchal.ctl.ladder.boundary.LadderException;
+import ski.puchal.ctl.ladder.boundary.Level;
+import ski.puchal.ctl.ladder.boundary.ListItemBean;
+import ski.puchal.ctl.ladder.boundary.ResultBean;
 
 /**
  * @author Marek Puchalski, Capgemini
  */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class LadderManager {
+public class LadderData implements Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LadderManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LadderData.class);
 
     private static final long TIME_TILL_ADD_POSSIBLE_MILISEC = 60 * 60 * 1000;
     private static final int SHORT_LIST_SIZE = 30;
@@ -60,10 +63,14 @@ public class LadderManager {
         final Map<Long, List<LadderCounterBean>> groupedValues = map.values().stream()
                 .collect(Collectors.groupingBy(LadderCounterBean::getLadderCount));
         list = groupedValues.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .sorted(Collections.reverseOrder(Comparator.comparing(Map.Entry::getKey)))
                 .map(Map.Entry::getValue)
                 .peek(Collections::sort)
                 .collect(Collectors.toList());
+    }
+
+    public ResultBean getTopPlayers() {
+        return getTopPlayers(null);
     }
 
     public synchronized ResultBean getTopPlayers(final String name) {

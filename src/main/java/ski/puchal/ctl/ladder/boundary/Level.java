@@ -1,4 +1,4 @@
-package ski.puchal.ctl.add.boundary;
+package ski.puchal.ctl.ladder.boundary;
 
 public enum Level {
     LEVEL1, LEVEL2

@@ -1,9 +1,10 @@
-package ski.puchal.ctl.ladder.control;
+package ski.puchal.ctl.ladder.boundary;
+
+import java.io.Serializable;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import ski.puchal.ctl.add.boundary.Level;
 
 /**
  * @author Marek Puchalski, Capgemini
@@ -11,7 +12,7 @@ import ski.puchal.ctl.add.boundary.Level;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class LadderCounterBean implements Comparable<LadderCounterBean> {
+public class LadderCounterBean implements Comparable<LadderCounterBean>, Serializable {
     private final String name;
     private final Level level;
     private final long ladderCount;
