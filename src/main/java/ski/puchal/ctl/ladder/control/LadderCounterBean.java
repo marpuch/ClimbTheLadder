@@ -1,10 +1,11 @@
-package ski.puchal.ctl.ladder.boundary;
+package ski.puchal.ctl.ladder.control;
 
 import java.io.Serializable;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import ski.puchal.ctl.ladder.boundary.Level;
 
 /**
  * @author Marek Puchalski, Capgemini

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ski.puchal.ctl.ladder.boundary.LadderCounterBean;
 import ski.puchal.ctl.ladder.boundary.LadderException;
 import ski.puchal.ctl.ladder.boundary.Level;
 import ski.puchal.ctl.ladder.boundary.ListItemBean;

@@ -1,4 +1,4 @@
-package ski.puchal.ctl.add.boundary;
+package ski.puchal.ctl.query.boundary;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
