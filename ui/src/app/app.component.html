@@ -6,9 +6,28 @@
   </div>
 </nav>
 
-<div class="container-fluid">
-  <h3>Brand / Logo</h3>
-  <p>The .navbar-brand class is used to highlight the brand/logo/project name of your page.</p>
+<br/>
+<br/>
+<div class="container">
+    <!--<div class="d-flex justify-content-center align-items-center">-->
+    <table class="table table-striped">
+        <thead>
+            <th>Place</th>
+            <th>Name</th>
+            <th>Ladders</th>
+            <th>Level</th>
+            <th>Add next ladder after</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of listItems.shortList">
+                <td>{{item.position}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.ladderCount}}</td>
+                <td>{{item.level}}</td>
+                <td>{{item.timestamp}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 
