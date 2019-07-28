@@ -15,4 +15,8 @@ export class QueryService {
   get() {
     return this.http.get('/query');
   }
+
+  add(body:string) {
+    return this.http.post('/add', body, httpOptions)
+  }
 }

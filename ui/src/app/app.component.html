@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="#">Climb The Ladder</a>
   <div class="form-inline ml-auto">
-    <input id="name1" type="text" class="form-control mr-sm-2" placeholder="Nick" name="name">
-    <button id="submit1" class="btn btn-primary">Add Ladder</button>
+    <input id="name1" type="text" class="form-control mr-sm-2" placeholder="Nick" [(ngModel)]="name" required>
+    <button id="submit1" class="btn btn-primary" (click)="addLadder()" [disabled]="!name">Add Ladder</button>
   </div>
 </nav>
 
@@ -19,7 +19,7 @@
             <th>Add next ladder after</th>
         </thead>
         <tbody>
-            <tr *ngFor="let item of listItems.shortList">
+            <tr *ngFor="let item of listItems?.shortList">
                 <td>{{item.position}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.ladderCount}}</td>
