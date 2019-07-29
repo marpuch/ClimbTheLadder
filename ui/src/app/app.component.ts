@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {QueryService} from "./services/query.service";
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,10 @@ export class AppComponent implements OnInit {
   name = "";
   public listItems;
 
-  constructor(private queryService : QueryService) {}
+  constructor(private toastr: ToastrService, private queryService : QueryService) {}
 
   ngOnInit(): void {
+    this.toastr.toastrConfig.positionClass = 'toast-bottom-right';
     this.getListItems();
   }
 
@@ -32,11 +34,22 @@ export class AppComponent implements OnInit {
     this.queryService.add(body).subscribe(
       data => {
         this.listItems = data;
+        this.showToaster(true, "Ladder added successfully");
         this.name = "";
       },
-      err => { console.error(err) },
+      err => {
+        console.error(err);
+        this.showToaster(false, err.message);
+      },
       () => console.log("Ladder added")
-    );
+    )
+  }
 
+  showToaster(ok : boolean, message : string){
+    if (ok) {
+      this.toastr.success(message);
+    } else {
+      this.toastr.warning(message);
+    }
   }
 }
