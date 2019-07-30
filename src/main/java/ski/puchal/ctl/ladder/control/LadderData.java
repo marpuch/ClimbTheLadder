@@ -40,7 +40,11 @@ public class LadderData implements Serializable {
             throw new LadderException("User is not playing level 1 any more");
         } else if (ctr.getTimestamp() + TIME_TILL_ADD_POSSIBLE_MILISEC > timestamp) {
             final long nextAddPossibleSec = (ctr.getTimestamp() + TIME_TILL_ADD_POSSIBLE_MILISEC - timestamp) / 1000;
-            throw new LadderException("You can add a ladder again after " + nextAddPossibleSec + " seconds");
+            if (nextAddPossibleSec < 60) {
+                throw new LadderException("You can add a ladder again after " + nextAddPossibleSec + " seconds");
+            } else {
+                throw new LadderException("You can add a ladder again after " + nextAddPossibleSec/60 + " minutes");
+            }
         } else if (ctr.getLadderCount() == 9) {
             // promote to level 2
             map.put(name, new LadderCounterBean(name, Level.LEVEL2, ctr.getLadderCount() + 1, timestamp));
