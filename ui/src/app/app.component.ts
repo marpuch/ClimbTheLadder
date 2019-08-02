@@ -59,8 +59,10 @@ export class AppComponent implements OnInit {
         console.error(err);
         if (err.status == 400) {
             this.listItems = err.error;
-            this.showToast(false, this.listItems.errorMessage);
+            this.showToast(false, "Http status 400: " + this.listItems.errorMessage);
             this.registerCallAgain();
+        } else if (err.status == 429) {
+            this.showToast(false, "Http status 429: ♪♫♬ Slow down, you're movin' to fast ♪♫♬")
         } else {
             this.showToast(false, err.message);
         }
