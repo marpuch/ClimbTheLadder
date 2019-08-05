@@ -7,8 +7,12 @@ import lombok.Data;
  */
 @Data
 public class AccumulatedLevel2LaddersBean {
-    private int ladderCount;
     private long timestamp;
+    private int ladderCount;
+
+    public AccumulatedLevel2LaddersBean() {
+        // needed for jackson
+    }
 
     public AccumulatedLevel2LaddersBean(final int ladderCount, final long timestamp) {
         this.ladderCount = ladderCount;

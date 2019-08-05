@@ -42,7 +42,6 @@ public class AddLadderCtl {
         return ResponseEntity.ok(persistentLadderData.getTopPlayers(bean.getName()));
     }
 
-
     @Bean
     public FilterRegistrationBean<SlowDownFilter> loggingFilter(){
         FilterRegistrationBean<SlowDownFilter> filterRegistrationBean = new FilterRegistrationBean<>();

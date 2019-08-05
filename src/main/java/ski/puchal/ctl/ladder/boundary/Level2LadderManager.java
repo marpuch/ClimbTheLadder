@@ -41,12 +41,25 @@ public class Level2LadderManager {
         }
     }
 
-    public String serialize() {
+    public String serialize(final AccumulatedLevel2LaddersBean bean) {
         final ObjectMapper mapper = new ObjectMapper();
         try {
-            return Base64.getEncoder().encodeToString(mapper.writeValueAsString(this).getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(mapper.writeValueAsString(bean).getBytes(StandardCharsets.UTF_8));
         } catch (final JsonProcessingException e) {
             throw new LadderException("Something went really wrong: " + e.getMessage());
         }
+    }
+
+    public AccumulatedLevel2LaddersBean deserialize(final String s) {
+        try {
+            final byte[] rawBytes = Base64.getDecoder().decode(s);
+            final String jsonToBe = new String(rawBytes, StandardCharsets.UTF_8);
+            final ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jsonToBe, AccumulatedLevel2LaddersBean.class);
+        } catch (final Exception e) {
+            LOGGER.warn("Something went wrong while deserializing the value: " + s, e);
+            throw new LadderException("Don't do malicious things with the token please!");
+        }
+
     }
 }
