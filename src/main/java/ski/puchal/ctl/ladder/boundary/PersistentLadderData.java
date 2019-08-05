@@ -31,7 +31,7 @@ public class PersistentLadderData {
         persistent = Persistent.loadOptional(STORE_FOLDER, LadderData::new);
     }
 
-    public void addLadderLevel1(final String name, final long timestamp) {
+    public void addLadder(final String name, final long timestamp) {
         persistent.execute(new AddLadderLevel1Command(name, timestamp));
     }
 

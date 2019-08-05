@@ -16,6 +16,7 @@ import ski.puchal.ctl.ladder.boundary.LadderException;
 import ski.puchal.ctl.ladder.boundary.Level;
 import ski.puchal.ctl.ladder.boundary.ListItemBean;
 import ski.puchal.ctl.ladder.boundary.ResultBean;
+import ski.puchal.ctl.ladder.entity.LadderCounterBean;
 
 /**
  * @author Marek Puchalski, Capgemini
