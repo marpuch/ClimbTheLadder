@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import ski.puchal.ctl.ladder.boundary.PersistentLadderData;
 import ski.puchal.ctl.ladder.boundary.ResultBean;
 
@@ -20,10 +21,12 @@ import ski.puchal.ctl.ladder.boundary.ResultBean;
 public class AddLadderCtl {
 
     private final PersistentLadderData persistentLadderData;
+    private final MeterRegistry meterRegistry;
 
     @Autowired
-    public AddLadderCtl(final PersistentLadderData persistentLadderData) {
+    public AddLadderCtl(final PersistentLadderData persistentLadderData, final MeterRegistry meterRegistry) {
         this.persistentLadderData = persistentLadderData;
+        this.meterRegistry = meterRegistry;
     }
 
     @PostMapping(value = "/add")
@@ -46,7 +49,7 @@ public class AddLadderCtl {
     public FilterRegistrationBean<SlowDownFilter> loggingFilter(){
         FilterRegistrationBean<SlowDownFilter> filterRegistrationBean = new FilterRegistrationBean<>();
 
-        filterRegistrationBean.setFilter(new SlowDownFilter());
+        filterRegistrationBean.setFilter(new SlowDownFilter(meterRegistry));
         filterRegistrationBean.addUrlPatterns("/add/*");
 
         return filterRegistrationBean;

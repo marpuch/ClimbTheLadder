@@ -82,7 +82,7 @@ public class LadderDataTest {
             fail("Exception expected");
         } catch (final LadderException e) {
             // then
-            assertEquals("You can add a ladder again after 60 seconds", e.getMessage());
+            assertEquals("You can add a ladder again after 1 minutes", e.getMessage());
         }
     }
 
