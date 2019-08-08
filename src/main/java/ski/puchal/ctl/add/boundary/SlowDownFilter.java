@@ -14,11 +14,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.annotation.Order;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Order(1)
 public class SlowDownFilter implements Filter {
 
     private static final long FRAME_SIZE = 2000;
     private Map<String, Long> map = new HashMap<>();
+    private final Counter toFastCounter;
+
+    public SlowDownFilter(final MeterRegistry meterRegistry) {
+        this.toFastCounter = Counter.builder("business.request.toFastCounter")
+                .description("Request dropped with http status 429 to prevent automated attacks")
+                .register(meterRegistry);
+    }
 
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
@@ -30,6 +40,7 @@ public class SlowDownFilter implements Filter {
                 updateMapAndForwardRequest(request, response, chain, ip);
             } else {
                 final HttpServletResponse r = (HttpServletResponse) response;
+                toFastCounter.increment();
                 r.sendError(429, "Slow down, you're moving to fast..."); // rate limiting
             }
         } else {
