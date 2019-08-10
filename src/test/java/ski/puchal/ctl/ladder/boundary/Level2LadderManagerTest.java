@@ -109,7 +109,7 @@ public class Level2LadderManagerTest {
 
         // when
         try {
-            final AccumulatedLevel2LaddersBean bean = manager.deserialize(s);
+            manager.deserialize(s);
         } catch (final LadderException e) {
             // then
             assertEquals("Don't do malicious things with the token please!", e.getMessage());
