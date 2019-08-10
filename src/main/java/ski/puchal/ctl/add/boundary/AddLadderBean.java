@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class AddLadderBean {
     @NotBlank
-    @Size(max = 70)
+    @Size(max = 50)
     private String name;
 
     @Min(1563733571431L)
