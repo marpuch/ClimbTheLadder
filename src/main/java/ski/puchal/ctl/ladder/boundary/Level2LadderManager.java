@@ -68,4 +68,8 @@ public class Level2LadderManager {
     public void consume() {
         timestamp = System.currentTimeMillis();
     }
+
+    public void setTimeToGenerateLadderMilisec(final long timeToGenerateLadderMilisec) {
+        this.timeToGenerateLadderMilisec = timeToGenerateLadderMilisec;
+    }
 }

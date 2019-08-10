@@ -4,13 +4,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ski.puchal.ctl.ladder.entity.AccumulatedLevel2LaddersBean;
 
 public class Level2LadderManagerTest {
 
-    private Level2LadderManager manager = new Level2LadderManager();
+    private Level2LadderManager manager;
+
+    @Before
+    public void init() {
+        manager = new Level2LadderManager();
+        manager.setTimeToGenerateLadderMilisec(300000);
+    }
 
     @Test
     public void generate() {

@@ -73,7 +73,7 @@ public class LadderDataTest {
     @Test
     public void addLadderTwiceTooQuick() {
         // given
-        final LadderData manager = new LadderData(60000, 30);
+        final LadderData manager = new LadderData(3600000, 30);
 
         // when
         manager.addLadder("user1", 0, null);
