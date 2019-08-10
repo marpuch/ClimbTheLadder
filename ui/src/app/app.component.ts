@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
   }
 
   renderTime(timestamp : number, level : string) {
-      if (level == "LEVEL2") {
+      if (level != "LEVEL1") {
           return "-";
       }
 

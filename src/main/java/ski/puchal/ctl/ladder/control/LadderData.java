@@ -118,6 +118,9 @@ public class LadderData implements Serializable {
         for (int i = 0; i < list.size(); i++) {
             for (final LadderCounterBean bean : list.get(i)) {
                 if (name.equals(bean.getName())) {
+                    // separator line
+                    resultList.add(new ListItemBean(-1, "---", -1, -1,
+                            Level.LEVEL2));
                     resultList.add(new ListItemBean(i+1, bean.getName(),
                             bean.getTimestamp(), bean.getLadderCount(), bean.getLevel()));
                     return new ResultBean(resultList, resultList.size() - 1);

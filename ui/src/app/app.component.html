@@ -23,10 +23,10 @@
         <tbody>
             <tr *ngFor="let item of listItems?.shortList; index as i"
                 [class.table-success]="i==listItems.highlightIndex">
-                <td>{{item.position}}</td>
+                <td>{{item.position==-1?"":item.position}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.ladderCount}}</td>
-                <td>{{item.level}}</td>
+                <td>{{item.ladderCount==-1?"":item.ladderCount}}</td>
+                <td>{{item.ladderCount==-1?"":item.level}}</td>
                 <td>{{renderTime(item.timestamp, item.level)}}</td>
             </tr>
         </tbody>
