@@ -16,6 +16,7 @@ import ski.puchal.ctl.ladder.boundary.LadderException;
 import ski.puchal.ctl.ladder.boundary.Level;
 import ski.puchal.ctl.ladder.boundary.ListItemBean;
 import ski.puchal.ctl.ladder.boundary.ResultBean;
+import ski.puchal.ctl.ladder.entity.AccumulatedLevel2LaddersBean;
 import ski.puchal.ctl.ladder.entity.LadderCounterBean;
 
 /**
@@ -25,22 +26,42 @@ public class LadderData implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LadderData.class);
 
-    private static final long TIME_TILL_ADD_POSSIBLE_MILISEC = 60 * 60 * 1000;
-    private static final int SHORT_LIST_SIZE = 30;
+    private final long timeTillAddPossibleMilisec;
+
+    private final int shortListSize;
 
     private final Map<String, LadderCounterBean> map = new HashMap<>();
     private List<List<LadderCounterBean>> list = new ArrayList<>();
 
-    public synchronized void addLadderLevel1(final String name, final long timestamp) {
+    public LadderData(final long timeTillAddPossibleMilisec, final int shortListSize) {
+        this.timeTillAddPossibleMilisec = timeTillAddPossibleMilisec;
+        this.shortListSize = shortListSize;
+    }
+
+    public synchronized void addLadder(final String name, final long timestamp,
+            final AccumulatedLevel2LaddersBean level2Ladders) {
         final LadderCounterBean ctr = map.get(name);
         if (ctr == null) {
             map.put(name, new LadderCounterBean(name, Level.LEVEL1, 1, timestamp));
             recalculateList();
             LOGGER.info("New user added {}, ladder count {}", name, 1);
-        } else if (!Level.LEVEL1.equals(ctr.getLevel())) {
-            throw new LadderException("User is not playing level 1 any more");
-        } else if (ctr.getTimestamp() + TIME_TILL_ADD_POSSIBLE_MILISEC > timestamp) {
-            final long nextAddPossibleSec = (ctr.getTimestamp() + TIME_TILL_ADD_POSSIBLE_MILISEC - timestamp) / 1000;
+        } else if (Level.LEVEL2.equals(ctr.getLevel())) {
+            playLevel2(name, level2Ladders, ctr);
+        } else {
+            playLevel1(name, timestamp, ctr);
+        }
+    }
+
+    private void playLevel2(final String name, final AccumulatedLevel2LaddersBean level2Ladders,
+            final LadderCounterBean ctr) {
+        map.put(name, new LadderCounterBean(ctr.getName(), ctr.getLevel(),
+                ctr.getLadderCount() + level2Ladders.getLadderCount(), System.currentTimeMillis()));
+        recalculateList();
+    }
+
+    private void playLevel1(final String name, final long timestamp, final LadderCounterBean ctr) {
+        if (ctr.getTimestamp() + timeTillAddPossibleMilisec > timestamp) {
+            final long nextAddPossibleSec = (ctr.getTimestamp() + timeTillAddPossibleMilisec - timestamp) / 1000;
             if (nextAddPossibleSec < 60) {
                 throw new LadderException("You can add a ladder again after " + nextAddPossibleSec + " seconds");
             } else {
@@ -69,11 +90,11 @@ public class LadderData implements Serializable {
     }
 
     public synchronized ResultBean getTopPlayers(final String name) {
-        final List<ListItemBean> resultList = new ArrayList<>(SHORT_LIST_SIZE + 1);
+        final List<ListItemBean> resultList = new ArrayList<>(shortListSize + 1);
 
-        for (int i = 0; i < list.size() && resultList.size() < SHORT_LIST_SIZE; i++) {
+        for (int i = 0; i < list.size() && resultList.size() < shortListSize; i++) {
             for (final LadderCounterBean bean : list.get(i)) {
-                if (resultList.size() < SHORT_LIST_SIZE) {
+                if (resultList.size() < shortListSize) {
                     resultList.add(new ListItemBean(i+1, bean.getName(),
                             bean.getTimestamp(), bean.getLadderCount(), bean.getLevel()));
                 } else {
@@ -107,5 +128,10 @@ public class LadderData implements Serializable {
         LOGGER.error("For some reason the name {} could not be found despite the map saying it should", name);
 
         throw new LadderException("Something went wrong. Look into the logs for more info.");
+    }
+
+    public synchronized Boolean isLevel2Player(final String name) {
+        final LadderCounterBean ctr = map.get(name);
+        return ctr != null && Level.LEVEL2.equals(ctr.getLevel());
     }
 }

@@ -5,6 +5,7 @@ import java.util.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,14 @@ public class Level2LadderManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Level2LadderManager.class);
 
-    private static final long TIME_TO_GENERATE_LADDER_MILISEC = 5 * 60 * 1000L;
+    @Value("${business.time_to_generate_level2_ladder_milisec}")
+    private long timeToGenerateLadderMilisec;
+
     private long timestamp = System.currentTimeMillis();
 
     public AccumulatedLevel2LaddersBean generate() {
         final long timestamp_now = System.currentTimeMillis();
-        final int ladders = (int) ((timestamp_now - timestamp) / TIME_TO_GENERATE_LADDER_MILISEC);
+        final int ladders = (int) ((timestamp_now - timestamp) / timeToGenerateLadderMilisec);
         return new AccumulatedLevel2LaddersBean(ladders, timestamp_now);
     }
 
@@ -60,6 +63,9 @@ public class Level2LadderManager {
             LOGGER.warn("Something went wrong while deserializing the value: " + s, e);
             throw new LadderException("Don't do malicious things with the token please!");
         }
+    }
 
+    public void consume() {
+        timestamp = System.currentTimeMillis();
     }
 }

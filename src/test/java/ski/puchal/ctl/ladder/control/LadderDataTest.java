@@ -16,7 +16,7 @@ public class LadderDataTest {
     @Test
     public void emptyAfterInit() {
         // given
-        final LadderData manager = new LadderData();
+        final LadderData manager = new LadderData(60000, 30);
 
         // when
         final ResultBean result = manager.getTopPlayers(null);
@@ -30,10 +30,10 @@ public class LadderDataTest {
     @Test
     public void addLadderOnce() {
         // given
-        final LadderData manager = new LadderData();
+        final LadderData manager = new LadderData(60000, 30);
 
         // when
-        manager.addLadderLevel1("user1", 12345);
+        manager.addLadder("user1", 12345, null);
         final ResultBean result = manager.getTopPlayers(null);
 
         // then
@@ -51,11 +51,11 @@ public class LadderDataTest {
     @Test
     public void addLadderTwice() {
         // given
-        final LadderData manager = new LadderData();
+        final LadderData manager = new LadderData(60000, 30);
 
         // when
-        manager.addLadderLevel1("user1", 12345);
-        manager.addLadderLevel1("user1", 12345000);
+        manager.addLadder("user1", 12345, null);
+        manager.addLadder("user1", 12345000, null);
         final ResultBean result = manager.getTopPlayers(null);
 
         // then
@@ -73,12 +73,12 @@ public class LadderDataTest {
     @Test
     public void addLadderTwiceTooQuick() {
         // given
-        final LadderData manager = new LadderData();
+        final LadderData manager = new LadderData(60000, 30);
 
         // when
-        manager.addLadderLevel1("user1", 0);
+        manager.addLadder("user1", 0, null);
         try {
-            manager.addLadderLevel1("user1", 3540000);
+            manager.addLadder("user1", 3540000, null);
             fail("Exception expected");
         } catch (final LadderException e) {
             // then

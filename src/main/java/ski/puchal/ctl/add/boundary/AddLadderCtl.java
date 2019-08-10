@@ -32,7 +32,7 @@ public class AddLadderCtl {
     @PostMapping(value = "/add")
     public ResponseEntity<ResultBean> add(@Valid @RequestBody final AddLadderBean bean) {
         try {
-            persistentLadderData.addLadder(bean.getName(), bean.getTimestamp());
+            persistentLadderData.addLadder(bean.getName(), bean.getTimestamp(), bean.getLevel2Ladders());
         } catch (final Exception e) {
             final ResultBean result = persistentLadderData.getTopPlayers();
             if (e.getCause() != null) {

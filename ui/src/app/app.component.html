@@ -1,5 +1,8 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="#">Climb The Ladder</a>
+  <div data-toggle="tooltip" data-placement="top" title="Interesting once you reach level 2">
+      <span class="navbar-text">Level 2 ladders: {{listItems?.level2LadderCount}}</span>
+  </div>
   <div class="form-inline ml-auto">
     <input id="name1" type="text" class="form-control mr-sm-2" placeholder="Nick" [(ngModel)]="name" required>
     <button id="submit1" class="btn btn-primary" (click)="addLadder()" [disabled]="!name">Add Ladder</button>
@@ -9,7 +12,6 @@
 <br/>
 <br/>
 <div class="container">
-    <!--<div class="d-flex justify-content-center align-items-center">-->
     <table class="table table-striped">
         <thead>
             <th>Place</th>
@@ -25,10 +27,14 @@
                 <td>{{item.name}}</td>
                 <td>{{item.ladderCount}}</td>
                 <td>{{item.level}}</td>
-                <td>{{renderTime(item.timestamp)}}</td>
+                <td>{{renderTime(item.timestamp, item.level)}}</td>
             </tr>
         </tbody>
     </table>
 </div>
 
-
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

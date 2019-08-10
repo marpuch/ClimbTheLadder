@@ -45,8 +45,10 @@ export class AppComponent implements OnInit {
   }
 
   addLadder() {
-    const data = { name : this.name, timestamp : Date.now() };
-    console.log("Add ladder for name: " + data.name + " timestamp: " + data.timestamp);
+    const data = { name : this.name, timestamp : Date.now(), level2Ladders : this.listItems.level2LadderPayload };
+    console.log("Add ladder for name: " + data.name
+        + " timestamp: " + data.timestamp
+        + " payload: " + data.level2Ladders);
     const body = JSON.stringify(data);
     this.queryService.add(body).subscribe(
       data => {
@@ -79,7 +81,11 @@ export class AppComponent implements OnInit {
     }
   }
 
-  renderTime(timestamp : number) {
+  renderTime(timestamp : number, level : string) {
+      if (level == "LEVEL2") {
+          return "-";
+      }
+
       const now = Date.now();
       const hour_in_milisec = 3600000;
       const next_add_possible = timestamp + hour_in_milisec;

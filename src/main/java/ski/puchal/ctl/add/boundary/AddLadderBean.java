@@ -19,4 +19,6 @@ public class AddLadderBean {
     @Min(1563733571431L)
     @Max(Long.MAX_VALUE)
     private long timestamp;
+
+    private String level2Ladders;
 }
