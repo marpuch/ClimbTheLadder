@@ -14,6 +14,7 @@ public class ResultBean {
     private int highlightIndex;
     private int level2LadderCount;
     private String level2LadderPayload;
+    private int playersCount;
 
     public ResultBean(final List<ListItemBean> shortList, final int highlightIndex) {
         this.shortList = shortList;

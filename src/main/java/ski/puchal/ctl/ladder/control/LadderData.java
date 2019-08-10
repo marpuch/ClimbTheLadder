@@ -137,4 +137,8 @@ public class LadderData implements Serializable {
         final LadderCounterBean ctr = map.get(name);
         return ctr != null && Level.LEVEL2.equals(ctr.getLevel());
     }
+
+    public synchronized Integer getPlayersCount() {
+        return map.size();
+    }
 }

@@ -64,7 +64,12 @@ public class PersistentLadderData {
 
     public ResultBean getTopPlayers(final String name) {
         final ResultBean result =  persistent.query(new GetTopLevelCommand(name));
-        return addLevel2Data(result);
+        return addLevel2Data(addPlayersData(result));
+    }
+
+    private ResultBean addPlayersData(final ResultBean result) {
+        result.setPlayersCount(persistent.query(new GetPlayersCountCommand()));
+        return result;
     }
 
     private ResultBean addLevel2Data(final ResultBean result) {
@@ -76,7 +81,7 @@ public class PersistentLadderData {
 
     public ResultBean getTopPlayers() {
         final ResultBean result = persistent.query(new GetTopLevelCommand());
-        return addLevel2Data(result);
+        return addLevel2Data(addPlayersData(result));
     }
 
     private static final class AddLadderCommand implements VoidCommand<LadderData> {
@@ -126,6 +131,14 @@ public class PersistentLadderData {
         @Override
         public Boolean evaluate(final LadderData ladderData) {
             return ladderData.isLevel2Player(name);
+        }
+    }
+
+    private static final class GetPlayersCountCommand implements Query<LadderData, Integer> {
+
+        @Override
+        public Integer evaluate(final LadderData ladderData) {
+            return ladderData.getPlayersCount();
         }
     }
 
